@@ -1,30 +1,33 @@
 use std::collections::{HashMap, HashSet};
 
-
 #[allow(dead_code)]
-fn mean<'a, T>(data: &'a [T]) -> Option<T> 
-where T: core::iter::Sum<&'a T> + std::ops::Div<usize, Output = T>
+fn mean<'a, T>(data: &'a [T]) -> Option<T>
+where
+    T: core::iter::Sum<&'a T> + std::ops::Div<usize, Output = T>,
 {
     let sum = data.iter().sum::<T>();
     let count = data.len();
 
     match count {
         positive if positive > 0 => Some(sum / count),
-        _ => None
+        _ => None,
     }
 }
 
 #[allow(dead_code)]
 fn median(list: &mut [u32]) -> Option<f64> {
-    if list.len() == 0 {
-        return None
+    if list.is_empty() {
+        return None;
     }
     list.sort();
     let len = list.len();
     let mid = len / 2;
     if len % 2 == 0 {
-        Some((list.get(mid - 1).unwrap().to_owned() as f64 + list.get(mid).unwrap().to_owned() as f64)
-            / 2.0)
+        Some(
+            (list.get(mid - 1).unwrap().to_owned() as f64
+                + list.get(mid).unwrap().to_owned() as f64)
+                / 2.0,
+        )
     } else {
         Some(list.get(mid).unwrap().to_owned() as f64)
     }
@@ -33,8 +36,8 @@ fn median(list: &mut [u32]) -> Option<f64> {
 #[allow(dead_code)]
 fn mode(list: &[u32]) -> HashSet<u32> {
     let mut mode: HashSet<u32> = HashSet::new();
-    if list.len() == 0 {
-        return mode
+    if list.is_empty() {
+        return mode;
     }
     let counts: HashMap<u32, u32> = list.iter().fold(HashMap::new(), |mut acc, &x| {
         *acc.entry(x).or_insert(0) += 1;
@@ -43,7 +46,7 @@ fn mode(list: &[u32]) -> HashSet<u32> {
     let mut max_count = 0;
     for (key, _) in counts.iter() {
         if *key > max_count {
-           max_count = *key; 
+            max_count = *key;
         }
     }
     for (key, value) in counts.iter() {
@@ -52,8 +55,6 @@ fn mode(list: &[u32]) -> HashSet<u32> {
         }
     }
     mode
-
-
 }
 
 #[cfg(test)]
